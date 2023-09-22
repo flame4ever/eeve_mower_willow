@@ -1,0 +1,12 @@
+{
+  "domain": "eeve_mower_willow",
+  "name": "Eeve Willow Mower",
+  "config_flow": true,
+  "codeowners": "@flame4ever",
+  "component": "switch",
+  "title": "EVE Willow Mower",
+  "description": "HomeAssistant Integration for controlling a EEVE Willow lawn mower.",
+  "documentation": "https://github.com/flame4ever/eeve_mower_willow",
+  "version": "0.1.0",
+  "logo": "images/icon.png"
+}
