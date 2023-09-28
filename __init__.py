@@ -1,27 +1,23 @@
-"""The EEVE Mower Willow integration."""
-import asyncio
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
-from .const import DOMAIN  # Stellen Sie sicher, dass Sie die richtige Domain verwenden
+import logging
+from homeassistant import config_entries, core
 
-async def async_setup(hass: HomeAssistant, config: dict):
-    """Set up the integration using YAML configuration."""
+from .const import DOMAIN
+_LOGGER = logging.getLogger(__name__)
+
+async def async_setup(hass: core.HomeAssistant, config: dict):
+    hass.data.setdefault(DOMAIN, {})
     return True
 
-async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
-    """Set up the integration using config entry."""
-    CONF_IP_ADDRESS = entry.data["CONF_IP_ADDRESS"]
-    CONF_MOWER_NAME = entry.title
+async def async_setup_entry(hass: core.HomeAssistant, entry: config_entries.ConfigEntry):
+    hass.data[DOMAIN][entry.entry_id] = {}
+    _LOGGER.info(f"Setting up {DOMAIN} with {entry.data}")
 
-    # Jetzt können Sie CONF_IP_ADDRESS und CONF_MOWER_NAME in Ihrer Integration verwenden
-    # Zum Beispiel, um Schalter-Entitäten, Sensoren oder andere Integrationen zu erstellen
-
-    # Rückgabe von True, um eine erfolgreiche Einrichtung anzuzeigen
+    hass.async_create_task(
+        hass.config_entries.async_forward_entry_setup(entry, "switch")
+    )
     return True
 
-
-async def async_remove_entry(hass: HomeAssistant, entry: ConfigEntry):
-    """Cleanup when an entry is removed."""
-    # Führen Sie alle notwendigen Aufräumarbeiten durch, wenn ein Konfigurationseintrag entfernt wird
-    # Rückgabe von True, um eine erfolgreiche Entfernung anzuzeigen
+async def async_unload_entry(hass: core.HomeAssistant, entry: config_entries.ConfigEntry):
+    await hass.config_entries.async_forward_entry_unload(entry, "switch")
+    hass.data[DOMAIN].pop(entry.entry_id)
     return True
