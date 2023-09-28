@@ -7,7 +7,10 @@ _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass, entry, async_add_entities):
     ip_address = entry.data[CONF_IP_ADDRESS]
-    switches = [MowerControlSwitch(ip_address), DockControlSwitch(ip_address)]
+    switches = [
+                MowerControlSwitch(ip_address),
+                DockControlSwitch(ip_address)
+                 ]
     async_add_entities(switches)
 
 class MowerControlSwitch(SwitchEntity):
