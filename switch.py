@@ -29,7 +29,6 @@ class MowerControlSwitch(SwitchEntity):
             "name": "Mower Control",
             "manufacturer": "EEVE",
             "model": "Willow",
-            # "sw_version": "1.0",  # Optional: Software version
         }
 
     @property
@@ -65,5 +64,15 @@ class MowerControlSwitch(SwitchEntity):
                 _LOGGER.error(f"Failed to turn off mower: {e}")
 
     async def async_update(self):
-        # Implement logic to update the state of the entity
-        pass
+
+        url = f"http://{self._ip_address}:8080/api/activities/info"
+        headers = {"accept": "application/json"}
+
+        async with aiohttp.ClientSession() as session:
+            try:
+                async with session.get(url, headers=headers) as response:
+                    data = await response.json()
+                    self._state = not (data.get("scheduledActivity") == "" and data.get("userActivity") == "")
+            except aiohttp.ClientError as e:
+                _LOGGER.error(f"Failed to update mower state: {e}")
+
