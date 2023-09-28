@@ -1,0 +1,10 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+*.yaml
+
+# Don't ignore directories (so we can look inside them, for other files)
+#!*/
+
+# Don't ignore these
+#!*.yaml
+.DS_Store
+.vs/
