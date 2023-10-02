@@ -56,7 +56,7 @@ class MowerControlSwitch(SwitchEntity):
 
     async def async_turn_off(self, **kwargs):
         _LOGGER.info(f"Turning off mower with IP address {self._ip_address}")
-        url = f"http://{self._ip_address}:8080/api/navigation/stopmowing"
+        url = f"http://{self._ip_address}:8080/api/navigation/stop"
         headers = {"accept": "*/*"}
         async with aiohttp.ClientSession() as session:
             try:
