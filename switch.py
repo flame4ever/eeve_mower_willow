@@ -10,7 +10,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
     switches = [
                 MowerControlSwitch(ip_address),
                 DockControlSwitch(ip_address)
-                 ]
+                ]
     async_add_entities(switches)
 
 class MowerControlSwitch(SwitchEntity):

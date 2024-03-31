@@ -15,6 +15,7 @@ class BatterySensor(Entity):
     def __init__(self, ip_address):
         self._ip_address = ip_address
         self._state = None
+        self._available_mowing_time = None
         self._name = "Mower Battery"
         self._unique_id = f"battery_sensor_{ip_address.replace('.', '_')}"
         self._device_id = f"eeve_mower_{ip_address.replace('.', '_')}"
@@ -49,6 +50,16 @@ class BatterySensor(Entity):
     def state(self):
         return self._state
 
+    @property
+    def available_mowing_time(self):
+        return self._available_mowing_time
+
+    @property
+    def extra_state_attributes(self):
+        return {
+            "available_mowing_time": self.available_mowing_time,
+            }
+
     async def async_update(self):
         url = f"http://{self._ip_address}:8080/api/system/batteryStatus"
         headers = {"accept": "application/json"}
@@ -57,6 +68,7 @@ class BatterySensor(Entity):
                 async with session.get(url, headers=headers) as response:
                     data = await response.json()
                     self._state = data.get("percentage")
+                    self._available_mowing_time = data.get("availableMowingTime")
             except aiohttp.ClientError as e:
                 _LOGGER.error(f"Failed to update battery status: {e}")
 
