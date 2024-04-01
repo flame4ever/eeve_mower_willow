@@ -14,9 +14,7 @@ async def async_setup_entry(hass: core.HomeAssistant, entry: config_entries.Conf
     hass.data[DOMAIN][entry.entry_id] = {}
     _LOGGER.info(f"Setting up {DOMAIN} with {entry.data}")
 
-    hass.async_create_task(
-        await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
-    )
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
     return True
 
