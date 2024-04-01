@@ -1,15 +1,22 @@
 import logging
 import aiohttp
 from homeassistant.components.button import ButtonEntity
-from .const import DOMAIN, CONF_IP_ADDRESS
+
+from .const import (
+    DOMAIN,
+    CONF_IP_ADDRESS,
+    MANUFACTURER,
+    MODEL,
+    NAME
+)
 
 _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass, entry, async_add_entities):
     ip_address = entry.data[CONF_IP_ADDRESS]
     buttons = [
-                RebootControlButton(ip_address)
-                 ]
+        RebootControlButton(ip_address)
+        ]
     async_add_entities(buttons)
 
 class RebootControlButton(ButtonEntity):
@@ -28,9 +35,9 @@ class RebootControlButton(ButtonEntity):
         """Get information about this device."""
         return {
             "identifiers": {(DOMAIN, self._device_id)},
-            "name": "EEVE Mower",
-            "manufacturer": "EEVE",
-            "model": "Willow",
+            "name": NAME,
+            "manufacturer": MANUFACTURER,
+            "model": MODEL,
         }
 
     @property
