@@ -16,7 +16,11 @@ from homeassistant.core import (
     callback
 )
 
-from .coordinator import MowingInfoCoordinator
+from .coordinator import (
+    MowingInfoCoordinator,
+    EmergencyStopCoordinator
+)
+
 from .const import (
     DOMAIN,
     CONF_IP_ADDRESS,
@@ -40,6 +44,12 @@ async def async_setup_entry(hass, entry, async_add_entities):
     async_add_entities([
         MowingTimeTodaySensor(mowing_info_coordinator, ip_address),
         MowingTimeTotalSensor(mowing_info_coordinator, ip_address)
+        ])
+
+    #Add emergency stop sensors
+    emergency_stop_coordinator = EmergencyStopCoordinator(hass, entry, ip_address)
+    async_add_entities([
+        EmergencyStopDescriptionSensor(emergency_stop_coordinator, ip_address)
         ])
 
 class BatterySensor(Entity):
@@ -247,6 +257,62 @@ class MowingTimeTotalSensor(CoordinatorEntity, SensorEntity):
     @property
     def state(self):
         return self.coordinator.data["mowingTime"]["total"]
+
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        """Handle updated data from the coordinator."""
+        self.async_write_ha_state()
+
+
+    async def async_update(self):
+        """Synchronize state"""
+        await self.coordinator.async_request_refresh()
+
+
+
+
+
+class EmergencyStopDescriptionSensor(CoordinatorEntity, SensorEntity):
+    """Emergency stop description sensor."""
+    
+    _attr_device_class = SensorDeviceClass.ENUM
+    _attr_options = [ "none" , "Sensors: [\"slam\"]"]
+
+    def __init__(self, coordinator, ip_address):
+        super().__init__(coordinator, context=0)
+
+        self._ip_address = ip_address  # Initialize the IP address
+        self._state = None
+        self._name = "Emergency Stop Description"
+        self._unique_id = f"emergency_stop_desc_sensor_{ip_address.replace('.', '_')}"
+        self._device_id = f"eeve_mower_{ip_address.replace('.', '_')}"
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def unique_id(self):
+        return self._unique_id
+
+    @property
+    def icon(self):
+            return "mdi:check-bold" if self.state == "none" else "mdi:alert"
+
+    @property
+    def device_info(self):
+        """Get information about this device."""
+        return {
+            "identifiers": {(DOMAIN, self._device_id)},
+            "name": NAME,
+            "manufacturer": MANUFACTURER,
+            "model": MODEL,
+        }
+
+    @property
+    def state(self):
+        return self.coordinator.data["description"]
 
 
     @callback
