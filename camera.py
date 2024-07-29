@@ -1,7 +1,15 @@
 import logging
+
 from homeassistant.components.camera import Camera
 from homeassistant.helpers import aiohttp_client
-from .const import DOMAIN, CONF_IP_ADDRESS
+
+from .const import (
+    DOMAIN,
+    CONF_IP_ADDRESS,
+    MANUFACTURER,
+    MODEL,
+    NAME
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -30,9 +38,9 @@ class MowerCamera(Camera):
         """Get information about this device."""
         return {
             "identifiers": {(DOMAIN, self._device_id)},
-            "name": "EEVE Mower",
-            "manufacturer": "EEVE",
-            "model": "Willow",
+            "name": NAME,
+            "manufacturer": MANUFACTURER,
+            "model": MODEL,
             # "sw_version": "1.0",  # Optional: Software version
         }
     

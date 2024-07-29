@@ -1,7 +1,15 @@
 import logging
 import aiohttp
+
 from homeassistant.components.switch import SwitchEntity
-from .const import DOMAIN, CONF_IP_ADDRESS
+
+from .const import (
+    DOMAIN,
+    CONF_IP_ADDRESS,
+    MANUFACTURER,
+    MODEL,
+    NAME
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -10,7 +18,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
     switches = [
                 MowerControlSwitch(ip_address),
                 DockControlSwitch(ip_address)
-                 ]
+                ]
     async_add_entities(switches)
 
 class MowerControlSwitch(SwitchEntity):
@@ -29,9 +37,9 @@ class MowerControlSwitch(SwitchEntity):
         """Get information about this device."""
         return {
             "identifiers": {(DOMAIN, self._device_id)},
-            "name": "EEVE Mower",
-            "manufacturer": "EEVE",
-            "model": "Willow",
+            "name": NAME,
+            "manufacturer": MANUFACTURER,
+            "model": MODEL,
         }
 
     @property
@@ -95,9 +103,9 @@ class DockControlSwitch(SwitchEntity):
         """Get information about this device."""
         return {
             "identifiers": {(DOMAIN, self._device_id)},
-            "name": "EEVE Mower",
-            "manufacturer": "EEVE",
-            "model": "Willow",
+            "name": NAME,
+            "manufacturer": MANUFACTURER,
+            "model": MODEL,
         }
 
     @property
