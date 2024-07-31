@@ -1,0 +1,8 @@
+{
+  "name": "EEVE Mower Willow",
+  "content_in_root": false,
+  "domains": ["eeve_mower_willow"],
+  "homeassistant": "2021.1.5",
+  "render_readme": true,
+  "zip_release": false
+}
