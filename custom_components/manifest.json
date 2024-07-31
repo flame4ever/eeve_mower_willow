@@ -8,5 +8,5 @@
   "title": "EVE Willow Mower",
   "description": "HomeAssistant Integration for controlling a EEVE Willow lawn mower.",
   "documentation": "https://github.com/flame4ever/eeve_mower_willow",
-  "version": "0.1.0"
+  "version": "0.2.0"
 }

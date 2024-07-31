@@ -64,7 +64,7 @@ class MowerControlSwitch(SwitchEntity):
 
     async def async_turn_off(self, **kwargs):
         _LOGGER.info(f"Turning off mower with IP address {self._ip_address}")
-        url = f"http://{self._ip_address}:8080/api/navigation/stop"
+        url = f"http://{self._ip_address}:8080/api/navigation/stopmowing"
         headers = {"accept": "*/*"}
         async with aiohttp.ClientSession() as session:
             try:
@@ -83,7 +83,7 @@ class MowerControlSwitch(SwitchEntity):
             try:
                 async with session.get(url, headers=headers) as response:
                     data = await response.json()
-                    self._state = not (data.get("scheduledActivity") == "" and data.get("userActivity") == "")
+                    self._state = (data.get("userActivity") == "MowActivity" or data.get("scheduledActivity") == "MowingPlannerActivity")
             except aiohttp.ClientError as e:
                 _LOGGER.error(f"Failed to update mower state: {e}")
 
@@ -147,6 +147,6 @@ class DockControlSwitch(SwitchEntity):
             try:
                 async with session.get(url, headers=headers) as response:
                     data = await response.json()
-                    self._state = not (data.get("scheduledActivity") == "" and data.get("userActivity") == "")
+                    self._state = (data.get("scheduledActivity") == "DockingActivity" or data.get("userActivity") == "DockingActivity")
             except aiohttp.ClientError as e:
                 _LOGGER.error(f"Failed to update mower state: {e}")
