@@ -7,6 +7,6 @@
   "dependencies": ["camera"],
   "title": "EVE Willow Mower",
   "description": "HomeAssistant Integration for controlling a EEVE Willow lawn mower.",
-  "documentation": "https://github.com/flame4ever/eeve_mower_willow",
+  "documentation": "https://www.home-assistant.io/integrations/eeve_mower_willow",
   "version": "0.2.0"
 }
