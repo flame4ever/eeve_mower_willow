@@ -1,15 +1,15 @@
 {
   "domain": "eeve_mower_willow",
-  "name": "EEVE Mower Willow ",
+  "name": "EEVE Mower Willow",
   "config_flow": true,
   "codeowners": "@flame4ever",
   "ssdp": [],
   "zeroconf": [],
   "homekit": {},
   "dependencies": [],
-  "title": "EVE Willow Mower",
+  "title": "EEVE Mower Willow",
   "issue_tracker": "https://github.com/flame4ever/eeve_mower_willow/issues",
   "description": "HomeAssistant Integration for controlling a EEVE Willow lawn mower.",
   "documentation": "https://www.home-assistant.io/integrations/eeve_mower_willow",
-  "version": "0.2.0"
+  "version": "0.2.1"
 }
