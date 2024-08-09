@@ -1,8 +1,8 @@
 {
-  "domain": "eeve_mower_willow",
+  "domains": ["eeve_mower_willow"],
   "name": "EEVE Mower Willow",
   "config_flow": true,
-  "codeowners": "@flame4ever",
+  "codeowners": ["@flame4ever"],
   "ssdp": [],
   "zeroconf": [],
   "homekit": {},
