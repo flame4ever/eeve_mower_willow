@@ -4,9 +4,9 @@
   "codeowners": ["@flame4ever"],
   "config_flow": true,
   "dependencies": [],
+  "documentation": "https://github.com/flame4ever/eeve_mower_willow",
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/flame4ever/eeve_mower_willow/issues",
-  "documentation": "https://github.com/flame4ever/eeve_mower_willow",
   "loggers": ["aioeeve_mower_willow"],
   "version": "0.2.2"
 }
