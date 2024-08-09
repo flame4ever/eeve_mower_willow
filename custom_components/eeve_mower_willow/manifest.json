@@ -10,6 +10,6 @@
   "title": "EEVE Mower Willow",
   "issue_tracker": "https://github.com/flame4ever/eeve_mower_willow/issues",
   "description": "HomeAssistant Integration for controlling a EEVE Willow lawn mower.",
-  "documentation": "https://www.home-assistant.io/integrations/eeve_mower_willow",
+  "documentation": "https://github.com/flame4ever/eeve_mower_willow",
   "version": "0.2.1"
 }
