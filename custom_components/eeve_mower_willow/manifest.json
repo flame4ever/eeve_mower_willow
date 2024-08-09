@@ -5,6 +5,7 @@
   "codeowners": ["@flame4ever"],
   "config_flow": true,
   "dependencies": [],
+  "iot_class": "local_polling"
   "issue_tracker": "https://github.com/flame4ever/eeve_mower_willow/issues",
   "description": "HomeAssistant Integration for controlling a EEVE Willow lawn mower.",
   "documentation": "https://github.com/flame4ever/eeve_mower_willow",
