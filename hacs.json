@@ -4,5 +4,6 @@
   "domains": ["eeve_mower_willow"],
   "homeassistant": "2024.1.0",
   "render_readme": true,
-  "zip_release": false
+  "zip_release": true,
+  "filename": "eeve_mower_willow.zip"
 }
