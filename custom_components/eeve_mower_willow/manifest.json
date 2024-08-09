@@ -1,5 +1,5 @@
 {
-  "domain": "eeve-mower-willow",
+  "domain": "eeve_mower_willow",
   "name": "EEVE Mower Willow",
   "config_flow": true,
   "codeowners": ["@flame4ever"],
