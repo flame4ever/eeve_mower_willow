@@ -6,8 +6,6 @@ _LOGGER = logging.getLogger(__name__)
 
 PLATFORMS: list[str] = [ "switch", "camera", "sensor", "button" ]
 
-CONFIG_SCHEMA = vol.Schema({DOMAIN: cv.config_entry_only_config_schema(DOMAIN)}, extra=vol.ALLOW_EXTRA)
-
 async def async_setup(hass: core.HomeAssistant, config: dict):
     hass.data.setdefault(DOMAIN, {})
     return True
