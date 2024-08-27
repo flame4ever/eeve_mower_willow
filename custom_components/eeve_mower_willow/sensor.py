@@ -54,7 +54,8 @@ async def async_setup_entry(hass, entry, async_add_entities):
     #Add mowing info sensors
     mowing_info_coordinator = MowingInfoCoordinator(hass, entry, ip_address)
     async_add_entities([
-        MowingTimeTodaySensor(mowing_info_coordinator, ip_address),
+        MowerActiveTimeTodaySensor(mowing_info_coordinator, ip_address),
+        MowingActivityTimeTodaySensor(mowing_info_coordinator, ip_address),
         MowingTimeTotalSensor(mowing_info_coordinator, ip_address)
         ])
 
@@ -763,21 +764,21 @@ class NetworkWifiStateSensor(Entity):
                 _LOGGER.error(f"Failed to fetch network wifi state: {e}")
                 self._state = None
 
-class MowingTimeTodaySensor(CoordinatorEntity, SensorEntity):
+class MowingActivityTimeTodaySensor(CoordinatorEntity, SensorEntity):
     """Mowing time today sensor."""
     
     _attr_icon = "mdi:mower"
     _attr_state_class = SensorStateClass.MEASUREMENT
     _attr_native_unit_of_measurement = "min"
     _attr_suggested_display_precision = 0
-    _attr_suggested_unit_of_measurement = "min"
+    #_attr_suggested_unit_of_measurement = "min"
 
     def __init__(self, coordinator, ip_address):
         super().__init__(coordinator, context=0)
 
         self._ip_address = ip_address  # Initialize the IP address
         self._state = None
-        self._name = "Mowing Time Today"
+        self._name = "Mowing activity time today"
         self._unique_id = f"mowing_time_today_sensor_{ip_address.replace('.', '_')}"
         self._device_id = f"eeve_mower_{ip_address.replace('.', '_')}"
 
@@ -801,7 +802,7 @@ class MowingTimeTodaySensor(CoordinatorEntity, SensorEntity):
 
     @property
     def state(self):
-        return self.coordinator.data["mowingTime"]["today"]
+        return self.coordinator.data["mowingTime"]["today"][1]
 
 
     @callback
@@ -814,6 +815,56 @@ class MowingTimeTodaySensor(CoordinatorEntity, SensorEntity):
         """Synchronize state"""
         await self.coordinator.async_request_refresh()
 
+class MowerActiveTimeTodaySensor(CoordinatorEntity, SensorEntity):
+    """Mowing time today sensor."""
+    
+    _attr_icon = "mdi:mower"
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_native_unit_of_measurement = "min"
+    _attr_suggested_display_precision = 0
+    #_attr_suggested_unit_of_measurement = "min"
+
+    def __init__(self, coordinator, ip_address):
+        super().__init__(coordinator, context=0)
+
+        self._ip_address = ip_address  # Initialize the IP address
+        self._state = None
+        self._name = "Mower active time today"
+        self._unique_id = f"mower_active_time_today_sensor_{ip_address.replace('.', '_')}"
+        self._device_id = f"eeve_mower_{ip_address.replace('.', '_')}"
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def unique_id(self):
+        return self._unique_id
+
+    @property
+    def device_info(self):
+        """Get information about this device."""
+        return {
+            "identifiers": {(DOMAIN, self._device_id)},
+            "name": NAME,
+            "manufacturer": MANUFACTURER,
+            "model": MODEL,
+        }
+
+    @property
+    def state(self):
+        return self.coordinator.data["mowingTime"]["today"][0]
+
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        """Handle updated data from the coordinator."""
+        self.async_write_ha_state()
+
+
+    async def async_update(self):
+        """Synchronize state"""
+        await self.coordinator.async_request_refresh()
 
 class MowingTimeTotalSensor(CoordinatorEntity, SensorEntity):
     """Mowing time total sensor."""
@@ -822,7 +873,7 @@ class MowingTimeTotalSensor(CoordinatorEntity, SensorEntity):
     _attr_state_class = SensorStateClass.MEASUREMENT
     _attr_native_unit_of_measurement = "min"
     _attr_suggested_display_precision = 0
-    _attr_suggested_unit_of_measurement = "min"
+    #_attr_suggested_unit_of_measurement = "min"
 
     def __init__(self, coordinator, ip_address):
         super().__init__(coordinator, context=0)
