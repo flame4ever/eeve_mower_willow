@@ -768,10 +768,10 @@ class MowingActivityTimeTodaySensor(CoordinatorEntity, SensorEntity):
     """Mowing time today sensor."""
     
     _attr_icon = "mdi:mower"
+    _attr_device_class = "duration"
     _attr_state_class = SensorStateClass.MEASUREMENT
     _attr_native_unit_of_measurement = "min"
     _attr_suggested_display_precision = 0
-    #_attr_suggested_unit_of_measurement = "min"
 
     def __init__(self, coordinator, ip_address):
         super().__init__(coordinator, context=0)
@@ -802,7 +802,7 @@ class MowingActivityTimeTodaySensor(CoordinatorEntity, SensorEntity):
 
     @property
     def state(self):
-        return self.coordinator.data["mowingTime"]["today"][1]
+        return self.coordinator.data["mowingTime"]["today"][1] / 60
 
 
     @callback
@@ -819,10 +819,10 @@ class MowerActiveTimeTodaySensor(CoordinatorEntity, SensorEntity):
     """Mowing time today sensor."""
     
     _attr_icon = "mdi:mower"
+    _attr_device_class = "duration"
     _attr_state_class = SensorStateClass.MEASUREMENT
     _attr_native_unit_of_measurement = "min"
     _attr_suggested_display_precision = 0
-    #_attr_suggested_unit_of_measurement = "min"
 
     def __init__(self, coordinator, ip_address):
         super().__init__(coordinator, context=0)
@@ -853,7 +853,7 @@ class MowerActiveTimeTodaySensor(CoordinatorEntity, SensorEntity):
 
     @property
     def state(self):
-        return self.coordinator.data["mowingTime"]["today"][0]
+        return self.coordinator.data["mowingTime"]["today"][0] / 60
 
 
     @callback
@@ -870,10 +870,10 @@ class MowingTimeTotalSensor(CoordinatorEntity, SensorEntity):
     """Mowing time total sensor."""
     
     _attr_icon = "mdi:mower"
+    _attr_device_class = "duration"
     _attr_state_class = SensorStateClass.MEASUREMENT
     _attr_native_unit_of_measurement = "min"
     _attr_suggested_display_precision = 0
-    #_attr_suggested_unit_of_measurement = "min"
 
     def __init__(self, coordinator, ip_address):
         super().__init__(coordinator, context=0)
@@ -904,7 +904,7 @@ class MowingTimeTotalSensor(CoordinatorEntity, SensorEntity):
 
     @property
     def state(self):
-        return self.coordinator.data["mowingTime"]["total"]
+        return self.coordinator.data["mowingTime"]["total"] / 60
 
 
     @callback
