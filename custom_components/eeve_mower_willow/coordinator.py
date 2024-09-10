@@ -59,7 +59,7 @@ class MowingInfoCoordinator(DataUpdateCoordinator):
             "mowingTime": {
                 "current": 0,
                 "max": 0,
-                "today": 0,
+                "today": [0,0],
                 "total": 0
             },
             "todayEndTime": None,
