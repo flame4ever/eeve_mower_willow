@@ -1,7 +1,9 @@
 # EEVE Mower Willow Integration for Home Assistant
 
-![Integration Example](https://github.com/flame4ever/eeve_mower_willow/blob/main/Example.png)
-![Integration Example](https://github.com/flame4ever/eeve_mower_willow/blob/main/Example2.png)
+![EEVE Mower device page in Home Assistant](Example.png)
+
+![EEVE Mower per-zone settings in Home Assistant](Example2.png)
+
 Control and monitor your **EEVE Mower Willow** robot lawn mower directly from Home Assistant.
 The integration talks to the mower's local REST API (`http://<mower-ip>:8080`) — no cloud required (`local_polling`).
 
