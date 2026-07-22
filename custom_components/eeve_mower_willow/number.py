@@ -520,7 +520,9 @@ class StartTimeAfterSunriseNumber(NumberEntity):
 class VolumeNumber(NumberEntity):
 
     _attr_has_entity_name = True
-    _attr_entity_category = EntityCategory.CONFIG
+    # No entity_category: the volume lives with the Sound switch in the main
+    # Controls section (not buried in Configuration), and it also sets the
+    # playback volume used by the Sound switch.
     _attr_translation_key = "volume"
     """Master volume for the mower speaker (0-100 %).
 

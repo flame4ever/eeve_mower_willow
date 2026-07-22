@@ -215,19 +215,10 @@
     },
     "button": {
       "reboot": {
-        "name": "Neustart"
+        "name": "System Neustart"
       },
       "shutdown": {
-        "name": "Herunterfahren"
-      },
-      "stop": {
-        "name": "Stopp"
-      },
-      "start_manual_driving": {
-        "name": "Manuelles Fahren starten"
-      },
-      "stop_manual_driving": {
-        "name": "Manuelles Fahren stoppen"
+        "name": "System Herunterfahren"
       },
       "move_forward": {
         "name": "Fahren – Vorwärts"
@@ -240,24 +231,6 @@
       },
       "turn_right": {
         "name": "Fahren – Rechts drehen"
-      },
-      "hard_emergency_stop": {
-        "name": "Not-Aus"
-      },
-      "release_emergency_stop": {
-        "name": "Not-Aus aufheben"
-      },
-      "play_sound": {
-        "name": "Ton abspielen"
-      },
-      "stop_sound": {
-        "name": "Ton stoppen"
-      },
-      "start_docking": {
-        "name": "Andocken"
-      },
-      "stop_docking": {
-        "name": "Andocken stoppen"
       },
       "clear_rain_sensor": {
         "name": "Regensensor zurücksetzen"
@@ -345,7 +318,7 @@
         "name": "Start nach Sonnenaufgang"
       },
       "volume": {
-        "name": "Lautstärke"
+        "name": "Sound Lautstärke"
       },
       "low_battery_threshold": {
         "name": "Niedriger Akkustand"
@@ -390,6 +363,21 @@
       },
       "auto_annotation": {
         "name": "Auto-Annotation"
+      },
+      "mowing_motor": {
+        "name": "Mähmotor"
+      },
+      "manual_driving": {
+        "name": "Manuelles Fahren"
+      },
+      "docking": {
+        "name": "Docking"
+      },
+      "emergency_stop": {
+        "name": "Not-Aus"
+      },
+      "sound": {
+        "name": "Sound"
       }
     },
     "lawn_mower": {

@@ -215,19 +215,10 @@
     },
     "button": {
       "reboot": {
-        "name": "Reboot"
+        "name": "System Restart"
       },
       "shutdown": {
-        "name": "Shutdown"
-      },
-      "stop": {
-        "name": "Stop"
-      },
-      "start_manual_driving": {
-        "name": "Start Manual Driving"
-      },
-      "stop_manual_driving": {
-        "name": "Stop Manual Driving"
+        "name": "System Shutdown"
       },
       "move_forward": {
         "name": "Move Forward"
@@ -240,24 +231,6 @@
       },
       "turn_right": {
         "name": "Turn Right"
-      },
-      "hard_emergency_stop": {
-        "name": "Emergency Stop"
-      },
-      "release_emergency_stop": {
-        "name": "Release Emergency Stop"
-      },
-      "play_sound": {
-        "name": "Play Sound"
-      },
-      "stop_sound": {
-        "name": "Stop Sound"
-      },
-      "start_docking": {
-        "name": "Start Docking"
-      },
-      "stop_docking": {
-        "name": "Stop Docking"
       },
       "clear_rain_sensor": {
         "name": "Clear Rain Sensor"
@@ -345,7 +318,7 @@
         "name": "Start After Sunrise"
       },
       "volume": {
-        "name": "Volume"
+        "name": "Sound Volume"
       },
       "low_battery_threshold": {
         "name": "Low Battery Threshold"
@@ -390,6 +363,21 @@
       },
       "auto_annotation": {
         "name": "Auto Annotation"
+      },
+      "mowing_motor": {
+        "name": "Cutting Motor"
+      },
+      "manual_driving": {
+        "name": "Manual Driving"
+      },
+      "docking": {
+        "name": "Docking"
+      },
+      "emergency_stop": {
+        "name": "Emergency Stop"
+      },
+      "sound": {
+        "name": "Sound"
       }
     },
     "lawn_mower": {

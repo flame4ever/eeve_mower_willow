@@ -21,6 +21,11 @@ class MowerCamera(Camera):
 
     _attr_has_entity_name = True
     _attr_translation_key = "mower_camera"
+    # The mower serves /image/front/img.jpg in ~15 ms, so a live view can run
+    # far faster than HA's 0.5 s (2 fps) default. 0.2 s ≈ 5 fps for a smooth
+    # picture while manually driving, without hammering the mower.
+    _attr_frame_interval = 0.2
+
     def __init__(self, ip_address):
         super().__init__()
         self._ip_address = ip_address

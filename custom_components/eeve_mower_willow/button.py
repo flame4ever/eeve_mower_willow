@@ -41,19 +41,10 @@ async def async_setup_entry(
     ip_address = entry.data[CONF_IP_ADDRESS]
     entities = [
         RebootControlButton(hass, ip_address),
-        StartManualDrivingButton(hass, ip_address),
-        StopManualDrivingButton(hass, ip_address),
-        StopButton(hass, ip_address),
-        StartDockingButton(hass, ip_address),
-        StopDockingButton(hass, ip_address),
-        HardEmergencyStopButton(hass, ip_address),
-        ReleaseEmergencyStopButton(hass, ip_address),
         ForwardControlButton(hass, ip_address),
         BackwardControlButton(hass, ip_address),
         TurnLeftButton(hass, ip_address),
         TurnRightButton(hass, ip_address),
-        PlaySoundButton(hass, ip_address),
-        StopSoundButton(hass, ip_address),
         ClearRainSensorButton(hass, ip_address),
         ShutdownButton(hass, ip_address),
         MapBuildButton(hass, ip_address),
@@ -113,16 +104,25 @@ class _MowerButton(ButtonEntity):
 
     async def _put(self, path: str, params: dict | None = None) -> int:
         """Issue a PUT request to the mower API and return the HTTP status."""
+        return await self._request("PUT", path, params)
+
+    async def _get(self, path: str, params: dict | None = None) -> int:
+        """Issue a GET request to the mower API and return the HTTP status."""
+        return await self._request("GET", path, params)
+
+    async def _request(self, method: str, path: str, params: dict | None = None) -> int:
+        """Issue a request to the mower API and return the HTTP status."""
         url = f"http://{self._ip_address}:8080{path}"
         async with aiohttp.ClientSession() as session:
             try:
-                async with session.put(
+                async with session.request(
+                    method,
                     url,
                     headers={"accept": "*/*"},
                     params=params or {},
                     timeout=aiohttp.ClientTimeout(total=10),
                 ) as resp:
-                    _LOGGER.info("%s → HTTP %s", path, resp.status)
+                    _LOGGER.info("%s %s → HTTP %s", method, path, resp.status)
                     return resp.status
             except aiohttp.ClientError as exc:
                 _LOGGER.error("Request to %s failed: %s", path, exc)
@@ -134,7 +134,6 @@ class _MowerButton(ButtonEntity):
 # ---------------------------------------------------------------------------
 
 class RebootControlButton(_MowerButton):
-    _attr_entity_category = EntityCategory.CONFIG
     _attr_translation_key = "reboot"
     """Reboot the mower."""
 
@@ -150,42 +149,6 @@ class RebootControlButton(_MowerButton):
     async def async_press(self) -> None:
         _LOGGER.info("Rebooting mower %s", self._ip_address)
         await self._put("/api/maintenance/reboot")
-
-
-class StartManualDrivingButton(_MowerButton):
-    _attr_translation_key = "start_manual_driving"
-    """Activate manual driving mode."""
-
-    @property
-    def unique_id(self) -> str:
-        return f"start_manual_driving_button_{self._ip_address.replace('.', '_')}"
-
-
-    @property
-    def icon(self) -> str:
-        return "mdi:steering"
-
-    async def async_press(self) -> None:
-        _LOGGER.info("Starting manual driving on mower %s", self._ip_address)
-        await self._put("/api/navigation/startmanualdriving")
-
-
-class StopButton(_MowerButton):
-    _attr_translation_key = "stop"
-    """Stop / pause the mower immediately."""
-
-    @property
-    def unique_id(self) -> str:
-        return f"stop_button_{self._ip_address.replace('.', '_')}"
-
-
-    @property
-    def icon(self) -> str:
-        return "mdi:stop-circle"
-
-    async def async_press(self) -> None:
-        _LOGGER.info("Stopping mower %s", self._ip_address)
-        await self._put("/api/navigation/stop")
 
 
 # ---------------------------------------------------------------------------
@@ -230,8 +193,9 @@ class BackwardControlButton(_MowerButton):
     async def async_press(self) -> None:
         speed = self._get_speed()
         _LOGGER.info("Moving mower %s backward at %.2f m/s", self._ip_address, speed)
-        await self._put(
-            "/api/navigation/backwards",
+        # Firmware 6.8.0: only GET /navigation/backwards works (PUT /api/... is 404)
+        await self._get(
+            "/navigation/backwards",
             params={"speed": speed, "distance": _DEFAULT_DISTANCE},
         )
 
@@ -251,9 +215,10 @@ class TurnLeftButton(_MowerButton):
 
     async def async_press(self) -> None:
         _LOGGER.info("Turning mower %s left (%d°)", self._ip_address, _DEFAULT_ROTATION)
-        await self._put(
-            "/api/navigation/spinAround",
-            params={"speed": self._get_speed(), "rotation": -_DEFAULT_ROTATION},
+        # Firmware 6.8.0: only GET /navigation/spinaround works; positive = left
+        await self._get(
+            "/navigation/spinaround",
+            params={"speed": self._get_speed(), "rotation": _DEFAULT_ROTATION},
         )
 
 
@@ -272,152 +237,11 @@ class TurnRightButton(_MowerButton):
 
     async def async_press(self) -> None:
         _LOGGER.info("Turning mower %s right (%d°)", self._ip_address, _DEFAULT_ROTATION)
-        await self._put(
-            "/api/navigation/spinAround",
-            params={"speed": self._get_speed(), "rotation": _DEFAULT_ROTATION},
+        # Firmware 6.8.0: only GET /navigation/spinaround works; negative = right
+        await self._get(
+            "/navigation/spinaround",
+            params={"speed": self._get_speed(), "rotation": -_DEFAULT_ROTATION},
         )
-
-
-# ---------------------------------------------------------------------------
-# Emergency stop buttons
-# ---------------------------------------------------------------------------
-
-class HardEmergencyStopButton(_MowerButton):
-    _attr_translation_key = "hard_emergency_stop"
-    """Perform an immediate hard emergency stop."""
-
-    @property
-    def unique_id(self) -> str:
-        return f"hard_emergency_stop_button_{self._ip_address.replace('.', '_')}"
-
-
-    @property
-    def icon(self) -> str:
-        return "mdi:stop-circle-outline"
-
-    async def async_press(self) -> None:
-        _LOGGER.warning("HARD EMERGENCY STOP on mower %s", self._ip_address)
-        await self._put("/api/navigation/hardEmergencyStop")
-
-
-class ReleaseEmergencyStopButton(_MowerButton):
-    _attr_translation_key = "release_emergency_stop"
-    """Release the emergency stop and resume normal operation."""
-
-    @property
-    def unique_id(self) -> str:
-        return f"release_emergency_stop_button_{self._ip_address.replace('.', '_')}"
-
-
-    @property
-    def icon(self) -> str:
-        return "mdi:play-circle"
-
-    async def async_press(self) -> None:
-        _LOGGER.info("Releasing emergency stop on mower %s", self._ip_address)
-        await self._put("/api/navigation/releaseEmergencyStop")
-
-
-# ---------------------------------------------------------------------------
-# Audio buttons
-# ---------------------------------------------------------------------------
-
-class PlaySoundButton(_MowerButton):
-    _attr_translation_key = "play_sound"
-    """Play a sound (R2D2.wav) on the mower."""
-
-    @property
-    def unique_id(self) -> str:
-        return f"play_sound_button_{self._ip_address.replace('.', '_')}"
-
-
-    @property
-    def icon(self) -> str:
-        return "mdi:volume-high"
-
-    async def async_press(self) -> None:
-        volume = self._get_volume()
-        _LOGGER.info("Playing sound on mower %s at volume %d%%", self._ip_address, volume)
-        await self._put(
-            "/api/maintenance/sound/play",
-            params={"fileName": "R2D2.wav", "volume": volume},
-        )
-
-
-class StopSoundButton(_MowerButton):
-    _attr_translation_key = "stop_sound"
-    """Stop any currently playing sound."""
-
-    @property
-    def unique_id(self) -> str:
-        return f"stop_sound_button_{self._ip_address.replace('.', '_')}"
-
-
-    @property
-    def icon(self) -> str:
-        return "mdi:volume-off"
-
-    async def async_press(self) -> None:
-        _LOGGER.info("Stopping sound on mower %s", self._ip_address)
-        await self._put("/api/maintenance/sound/stop")
-
-
-# ---------------------------------------------------------------------------
-# Navigation: Stop Mowing / Docking / Manual Driving
-# ---------------------------------------------------------------------------
-
-class StartDockingButton(_MowerButton):
-    _attr_translation_key = "start_docking"
-    """Send the mower back to the docking station."""
-
-    @property
-    def unique_id(self) -> str:
-        return f"start_docking_button_{self._ip_address.replace('.', '_')}"
-
-
-    @property
-    def icon(self) -> str:
-        return "mdi:home-import-outline"
-
-    async def async_press(self) -> None:
-        _LOGGER.info("Starting docking on mower %s", self._ip_address)
-        await self._put("/api/navigation/startdocking")
-
-
-class StopDockingButton(_MowerButton):
-    _attr_translation_key = "stop_docking"
-    """Cancel the docking process."""
-
-    @property
-    def unique_id(self) -> str:
-        return f"stop_docking_button_{self._ip_address.replace('.', '_')}"
-
-
-    @property
-    def icon(self) -> str:
-        return "mdi:home-remove-outline"
-
-    async def async_press(self) -> None:
-        _LOGGER.info("Stopping docking on mower %s", self._ip_address)
-        await self._put("/api/navigation/stopdocking")
-
-
-class StopManualDrivingButton(_MowerButton):
-    _attr_translation_key = "stop_manual_driving"
-    """Deactivate manual driving mode."""
-
-    @property
-    def unique_id(self) -> str:
-        return f"stop_manual_driving_button_{self._ip_address.replace('.', '_')}"
-
-
-    @property
-    def icon(self) -> str:
-        return "mdi:steering-off"
-
-    async def async_press(self) -> None:
-        _LOGGER.info("Stopping manual driving on mower %s", self._ip_address)
-        await self._put("/api/navigation/stopmanualdriving")
 
 
 # ---------------------------------------------------------------------------
@@ -444,7 +268,6 @@ class ClearRainSensorButton(_MowerButton):
 
 
 class ShutdownButton(_MowerButton):
-    _attr_entity_category = EntityCategory.CONFIG
     _attr_translation_key = "shutdown"
     """Shut down the mower completely."""
 
