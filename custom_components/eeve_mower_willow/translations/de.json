@@ -1,0 +1,411 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "EEVE Mäher Willow Einrichtung",
+        "description": "Gib die Details für deinen EEVE Mäher Willow ein.",
+        "data": {
+          "mower_name": "Mähername",
+          "ip_address": "IP-Adresse"
+        }
+      }
+    },
+    "error": {},
+    "abort": {}
+  },
+  "entity": {
+    "sensor": {
+      "battery": {
+        "name": "Akku"
+      },
+      "mower_activities": {
+        "name": "Aktivität"
+      },
+      "scheduler": {
+        "name": "Zeitplan"
+      },
+      "tool_planner_status": {
+        "name": "Werkzeugplaner"
+      },
+      "emergency_stop_desc": {
+        "name": "Notaus"
+      },
+      "docking_state": {
+        "name": "Dock-Status"
+      },
+      "charge_status": {
+        "name": "Ladestatus"
+      },
+      "charger_state": {
+        "name": "Ladegerät"
+      },
+      "charging_current": {
+        "name": "Ladestrom"
+      },
+      "charging_power": {
+        "name": "Ladeleistung"
+      },
+      "mowing_activity_time_today": {
+        "name": "Mähzeit heute"
+      },
+      "mower_active_time_today": {
+        "name": "Aktive Zeit heute"
+      },
+      "mowing_time_total": {
+        "name": "Mähzeit gesamt"
+      },
+      "current_mowing_session": {
+        "name": "Sitzungszeit"
+      },
+      "current_mowing_zone": {
+        "name": "Mähzone"
+      },
+      "today_end_time": {
+        "name": "Endzeit heute"
+      },
+      "rain_sensor_value": {
+        "name": "Regensensor"
+      },
+      "last_rain_time": {
+        "name": "Letzter Regen"
+      },
+      "network_state": {
+        "name": "Netzwerkstatus"
+      },
+      "network_default": {
+        "name": "Standard-Netzwerk"
+      },
+      "network_mobile_reason": {
+        "name": "Mobilfunk Grund"
+      },
+      "network_mobile_state": {
+        "name": "Mobilfunk Status"
+      },
+      "network_wifi_local_ip": {
+        "name": "WLAN IP"
+      },
+      "network_wifi_reason": {
+        "name": "WLAN Grund"
+      },
+      "network_wifi_signal": {
+        "name": "WLAN Signal"
+      },
+      "network_wifi_ssid": {
+        "name": "WLAN SSID"
+      },
+      "network_wifi_state": {
+        "name": "WLAN Status"
+      },
+      "gps": {
+        "name": "GPS"
+      },
+      "boot_count": {
+        "name": "Startzähler"
+      },
+      "exploring_state": {
+        "name": "Erkundungsstatus"
+      },
+      "hardware_version": {
+        "name": "Hardware-Version"
+      },
+      "motor_direction": {
+        "name": "Motorrichtung"
+      },
+      "mower_type": {
+        "name": "Mähertyp"
+      },
+      "serial_number": {
+        "name": "Seriennummer"
+      },
+      "unique_hardware_id": {
+        "name": "Hardware-ID"
+      },
+      "wheel_motors_type": {
+        "name": "Radmotoren"
+      },
+      "motor_ctrl_firmware": {
+        "name": "MC Firmware"
+      },
+      "motor_ctrl_hw_version": {
+        "name": "MC Hardware"
+      },
+      "motor_ctrl_serial": {
+        "name": "MC Seriennummer"
+      },
+      "motor_ctrl_type": {
+        "name": "MC Typ"
+      },
+      "motor_ctrl_uptime": {
+        "name": "MC Laufzeit"
+      },
+      "mower_rpm": {
+        "name": "Messer-Drehzahl"
+      },
+      "power_manager_status": {
+        "name": "Energieverwaltung"
+      },
+      "sunrise": {
+        "name": "Sonnenaufgang"
+      },
+      "sunset": {
+        "name": "Sonnenuntergang"
+      },
+      "system_time": {
+        "name": "Systemzeit"
+      },
+      "time_zone": {
+        "name": "Zeitzone"
+      },
+      "uptime": {
+        "name": "Laufzeit"
+      },
+      "application_version": {
+        "name": "App-Version"
+      },
+      "os_version": {
+        "name": "OS-Version"
+      },
+      "api_version": {
+        "name": "API-Version"
+      },
+      "slam_odometry": {
+        "name": "SLAM Odometrie"
+      },
+      "distance_to_charger": {
+        "name": "Abstand Ladestation"
+      },
+      "distance_to_person": {
+        "name": "Abstand Person"
+      },
+      "zones_count": {
+        "name": "Zonen"
+      },
+      "map_recording_info": {
+        "name": "Kartenaufzeichnung"
+      },
+      "disk_capacity": {
+        "name": "Speicherkapazität"
+      },
+      "disk_free": {
+        "name": "Freier Speicher"
+      }
+    },
+    "binary_sensor": {
+      "is_mowing": {
+        "name": "Mäht"
+      },
+      "is_docked": {
+        "name": "Angedockt"
+      },
+      "is_charging": {
+        "name": "Lädt"
+      },
+      "is_returning": {
+        "name": "Kehrt zurück"
+      },
+      "has_error": {
+        "name": "Fehler"
+      },
+      "is_recording_map": {
+        "name": "Kartenaufnahme"
+      },
+      "camera_lens_calibrated": {
+        "name": "Kamera kalibriert"
+      }
+    },
+    "button": {
+      "reboot": {
+        "name": "Neustart"
+      },
+      "shutdown": {
+        "name": "Herunterfahren"
+      },
+      "stop": {
+        "name": "Stopp"
+      },
+      "start_manual_driving": {
+        "name": "Manuelles Fahren starten"
+      },
+      "stop_manual_driving": {
+        "name": "Manuelles Fahren stoppen"
+      },
+      "move_forward": {
+        "name": "Fahren – Vorwärts"
+      },
+      "move_backward": {
+        "name": "Fahren – Rückwärts"
+      },
+      "turn_left": {
+        "name": "Fahren – Links drehen"
+      },
+      "turn_right": {
+        "name": "Fahren – Rechts drehen"
+      },
+      "hard_emergency_stop": {
+        "name": "Not-Aus"
+      },
+      "release_emergency_stop": {
+        "name": "Not-Aus aufheben"
+      },
+      "play_sound": {
+        "name": "Ton abspielen"
+      },
+      "stop_sound": {
+        "name": "Ton stoppen"
+      },
+      "start_docking": {
+        "name": "Andocken"
+      },
+      "stop_docking": {
+        "name": "Andocken stoppen"
+      },
+      "clear_rain_sensor": {
+        "name": "Regensensor zurücksetzen"
+      },
+      "build_map": {
+        "name": "Karte erstellen"
+      },
+      "start_map_exploration": {
+        "name": "Erkundung starten"
+      },
+      "stop_map_exploration": {
+        "name": "Erkundung stoppen"
+      },
+      "finish_map_exploration": {
+        "name": "Erkundung abschließen"
+      },
+      "abort_map_exploration": {
+        "name": "Erkundung abbrechen"
+      },
+      "retry_docking": {
+        "name": "Andocken wiederholen"
+      },
+      "resume_toolplanner": {
+        "name": "Werkzeugplaner fortsetzen"
+      },
+      "reset_heatmap": {
+        "name": "Heatmap zurücksetzen"
+      },
+      "reset_camera_calibration": {
+        "name": "Kamerakalibrierung zurücksetzen"
+      },
+      "auto_align_maps": {
+        "name": "Karten ausrichten"
+      }
+    },
+    "select": {
+      "mowing_zone": {
+        "name": "Mähzone"
+      },
+      "mowing_frequency": {
+        "name": "Mähhäufigkeit"
+      },
+      "global_mowing_pattern": {
+        "name": "Globales Mähmuster"
+      },
+      "obstacle_sensitivity": {
+        "name": "Hindernis-Empfindlichkeit"
+      },
+      "mowing_speed": {
+        "name": "Mähgeschwindigkeit"
+      },
+      "person_scanning_behaviour": {
+        "name": "Personenerkennung"
+      },
+      "show_emotion": {
+        "name": "Emotion anzeigen"
+      },
+      "zone_mowing_pattern": {
+        "name": "{zone_name} Mähmuster"
+      },
+      "zone_mowing_frequency": {
+        "name": "{zone_name} Mähhäufigkeit"
+      },
+      "zone_obstacle_sensitivity": {
+        "name": "{zone_name} Hindernis-Empfindl."
+      },
+      "all_zones_mowing_pattern": {
+        "name": "Alle Zonen Mähmuster"
+      },
+      "all_zones_mowing_frequency": {
+        "name": "Alle Zonen Mähhäufigkeit"
+      },
+      "all_zones_obstacle_sensitivity": {
+        "name": "Alle Zonen Hindernis-Empfindl."
+      }
+    },
+    "number": {
+      "max_mowing_time": {
+        "name": "Max. Mähzeit"
+      },
+      "manual_drive_speed": {
+        "name": "Fahrgeschwindigkeit"
+      },
+      "start_time_after_sunrise": {
+        "name": "Start nach Sonnenaufgang"
+      },
+      "volume": {
+        "name": "Lautstärke"
+      },
+      "low_battery_threshold": {
+        "name": "Niedriger Akkustand"
+      },
+      "zone_mower_height": {
+        "name": "{zone_name} Mähhöhe"
+      },
+      "zone_line_direction": {
+        "name": "{zone_name} Linienrichtung"
+      },
+      "all_zones_mower_height": {
+        "name": "Alle Zonen Mähhöhe"
+      },
+      "all_zones_line_direction": {
+        "name": "Alle Zonen Linienrichtung"
+      }
+    },
+    "switch": {
+      "mow_on_monday": {
+        "name": "Mähen am Montag"
+      },
+      "mow_on_tuesday": {
+        "name": "Mähen am Dienstag"
+      },
+      "mow_on_wednesday": {
+        "name": "Mähen am Mittwoch"
+      },
+      "mow_on_thursday": {
+        "name": "Mähen am Donnerstag"
+      },
+      "mow_on_friday": {
+        "name": "Mähen am Freitag"
+      },
+      "mow_on_saturday": {
+        "name": "Mähen am Samstag"
+      },
+      "mow_on_sunday": {
+        "name": "Mähen am Sonntag"
+      },
+      "starlight_beacons": {
+        "name": "StarLight Beacons"
+      },
+      "auto_annotation": {
+        "name": "Auto-Annotation"
+      }
+    },
+    "lawn_mower": {
+      "eeve_mower": {
+        "name": "Mäher"
+      }
+    },
+    "camera": {
+      "mower_camera": {
+        "name": "Kamera"
+      }
+    },
+    "text": {
+      "mower_name": {
+        "name": "Mähername"
+      }
+    }
+  }
+}

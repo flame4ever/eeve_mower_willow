@@ -1,6 +1,11 @@
 # EEVE Mower Willow - Home Assistant Integration
 
-This integration allows you to control and monitor your EEVE Willow lawn mower directly from Home Assistant. With this integration, you can track the mower's status, battery level, GPS location, and more. You can also send commands to start mowing, stop mowing, and return the mower to the docking station.
+Control and monitor your EEVE Willow lawn mower directly from Home Assistant — status,
+battery, per-zone settings, manual driving, map exploration and more. Mowing is controlled
+through a standard Home Assistant **lawn mower** entity (start / pause / dock).
+
+> Entity IDs below use the default `eeve_mower` / `mower` prefix. Adjust them to match your
+> mower's name in your setup.
 
 ## Automation Examples
 
@@ -10,128 +15,83 @@ This integration allows you to control and monitor your EEVE Willow lawn mower d
   id: 12345678-1234-1234-1234-123456789abc # Make this unique
   trigger:
     - platform: time
-      at:
-        - "08:00:00"
+      at: "08:00:00"
   action:
-  - service: switch.turn_on
-    target:
-      entity_id: switch.willow_start_mowing
+    - service: lawn_mower.start_mowing
+      target:
+        entity_id: lawn_mower.eeve_mower
 ```
 
-Send a message when mowing starts
+### Notification when mowing starts
 ```yaml
 - alias: Mower - Notification when mowing starts
   id: 23456789-2345-2345-2345-234567890bcd # Make this unique
   trigger:
     - platform: state
-      entity_id: sensor.willow_mowing_state # Change entities
-      to: "mowing"
+      entity_id: binary_sensor.eeve_mower_is_mowing
+      to: "on"
   action:
-    - service: notify.mobile_app_your_phone_app # Change entities
+    - service: notify.mobile_app_your_phone_app # Change to your device
       data:
-        message: "🌿 Willow started mowing."
-        data:
-          url: "/lovelace-mower/mower"
-          push:
-            thread-id: "mower-group"
+        message: "Willow started mowing."
 ```
 
-Send a message when the mower is done charging
+### Notification when fully charged
 ```yaml
-- alias: Mower - Notification when done charging
+- alias: Mower - Notification when fully charged
   id: 34567890-3456-3456-3456-345678901cde # Make this unique
   trigger:
-    - platform: template
-      value_template: "{{ states.sensor.willow_battery.state == 100 }}" # Change entities
+    - platform: numeric_state
+      entity_id: sensor.mower_battery
+      above: 99
   action:
-    - service: notify.mobile_app_your_phone_app # Change entities
+    - service: notify.mobile_app_your_phone_app # Change to your device
       data:
-        message: "🔋 Willow is fully charged."
-        data:
-          url: "/lovelace-mower/mower"
-          push:
-            thread-id: "mower-group"
+        message: "Willow is fully charged."
 ```
 
-Send a message when there is an error while charging
+### Dock the mower when it starts raining
 ```yaml
-- alias: Mower - Notification when charging error occurs
+- alias: Mower - Dock when raining
   id: 45678901-4567-4567-4567-456789012def # Make this unique
   trigger:
     - platform: state
-      entity_id: sensor.willow_charging_state # Change entities
-      from: "charging"
-      to: "error"
+      entity_id: sensor.eeve_mower_rain_sensor
+      to: "wet" # adjust to your rain sensor's value
   action:
-    - service: notify.mobile_app_your_phone_app # Change entities
-      data:
-        message: "🚨 Willow encountered an error while charging."
-        data:
-          url: "/lovelace-mower/mower"
-          push:
-            thread-id: "mower-group"
+    - service: lawn_mower.dock
+      target:
+        entity_id: lawn_mower.eeve_mower
 ```
 
-Send a message when the mower starts charging
-```yaml
-- alias: Mower - Notification when charging starts
-  id: 56789012-5678-5678-5678-567890123ef0 # Make this unique
-  trigger:
-    - platform: state
-      entity_id: sensor.willow_charging_state # Change entities
-      to: "charging"
-  action:
-    - service: notify.mobile_app_your_phone_app # Change entities
-      data:
-        message: "⚡ Willow started charging."
-        data:
-          url: "/lovelace-mower/mower"
-          push:
-            thread-id: "mower-group"
-```
-Lovelace Examples
+## Lovelace Example
 ```yaml
 type: vertical-stack
 cards:
+  - type: tile
+    entity: lawn_mower.eeve_mower
+    features:
+      - type: lawn-mower-commands
+        commands:
+          - start_pause
+          - dock
   - type: entities
-    entities:
-      - entity: sensor.willow_battery
-        name: Battery Level
-        icon: mdi:battery
-      - entity: sensor.willow_mowing_state
-        name: Mowing State
-        icon: mdi:robot-mower
-      - entity: sensor.willow_gps
-        name: GPS Location
-        icon: mdi:map-marker
     title: Mower Info
-    header:
-      type: picture
-      image: /local/willow.jpg
-      tap_action:
-        action: none
-      hold_action:
-        action: none
+    entities:
+      - entity: sensor.mower_battery
+        name: Battery
+      - entity: sensor.mower_activities
+        name: Activity
+      - entity: sensor.eeve_mower_current_mowing_zone
+        name: Current Zone
+      - entity: sensor.eeve_mower_rain_sensor
+        name: Rain Sensor
   - type: horizontal-stack
     cards:
-      - type: gauge
-        entity: sensor.willow_battery
-        min: 0
-        max: 100
-        name: Battery Level
-        unit: '%'
-        severity:
-          green: 60
-          yellow: 40
-          red: 20
-      - type: gauge
-        entity: sensor.willow_mowing_speed
-        min: 0
-        max: 10
-        name: Mowing Speed
-        unit: 'km/h'
-        severity:
-          green: 5
-          yellow: 3
-          red: 1
+      - type: button
+        entity: button.eeve_mower_hard_emergency_stop
+        name: Emergency Stop
+      - type: button
+        entity: button.eeve_mower_start_docking
+        name: Dock
 ```

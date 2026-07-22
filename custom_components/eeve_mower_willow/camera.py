@@ -18,6 +18,9 @@ async def async_setup_entry(hass, entry, async_add_entities):
     async_add_entities([MowerCamera(entry.data[CONF_IP_ADDRESS])])
 
 class MowerCamera(Camera):
+
+    _attr_has_entity_name = True
+    _attr_translation_key = "mower_camera"
     def __init__(self, ip_address):
         super().__init__()
         self._ip_address = ip_address
